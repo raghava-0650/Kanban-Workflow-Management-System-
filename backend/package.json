@@ -16,6 +16,7 @@
     "@testing-library/react": "^16.2.0",
     "cors": "^2.8.6",
     "express": "^4.22.2",
+    "multer": "^2.1.1",
     "nodemon": "^3.1.9",
     "socket.io": "^4.8.3",
     "vitest": "^3.0.7"
