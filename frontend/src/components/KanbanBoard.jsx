@@ -1,6 +1,6 @@
 import './KanbanBoard.css';
 
-import {
+import React, {
   useEffect,
   useRef,
   useState,
@@ -10,7 +10,7 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 
 import { socket } from '../socket/socket';
-import AddTaskModal from './AddTaskModal';
+import AddTaskModal from './AddTaskModel';
 import Column from './Column';
 import ConnectionAlert from './ConnectionAlert';
 import Navbar from './Navbar';
@@ -201,9 +201,9 @@ export default function KanbanBoard() {
           <TaskProgress tasks={tasks} />
 
           <div className="board">
-            <Column title="📋 To Do" status="todo" tasks={todoTasks} />
-            <Column title="⚙️ In Progress" status="inprogress" tasks={inProgressTasks} />
-            <Column title="✅ Done" status="done" tasks={doneTasks} />
+            <Column title="📋 To Do" status="todo" tasks={todoTasks} onUpload={openUploadDialog} />
+            <Column title="⚙️ In Progress" status="inprogress" tasks={inProgressTasks} onUpload={openUploadDialog} />
+            <Column title="✅ Done" status="done" tasks={doneTasks} onUpload={openUploadDialog} />
           </div>
         </div>
 

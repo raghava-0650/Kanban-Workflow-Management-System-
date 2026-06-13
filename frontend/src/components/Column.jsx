@@ -1,5 +1,7 @@
 import './Column.css';
 
+import React from 'react';
+
 import { useDrop } from 'react-dnd';
 
 import { socket } from '../socket/socket';
@@ -9,7 +11,7 @@ const ItemTypes = {
   TASK: "task"
 };
 
-export default function Column({ title, status, tasks }) {
+export default function Column({ title, status, tasks, onUpload  }) {
   const [{ isOver }, drop] = useDrop(() => ({
     accept: ItemTypes.TASK,
     drop: (item) => {
@@ -33,7 +35,7 @@ export default function Column({ title, status, tasks }) {
 
       <div className="column-content">
         {tasks.map(task => (
-          <TaskCard key={task.id} task={task} />
+          <TaskCard key={task.id} task={task} onUpload={onUpload} />
         ))}
         
         {tasks.length === 0 && (

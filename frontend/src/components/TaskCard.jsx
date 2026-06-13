@@ -1,5 +1,7 @@
 import './TaskCard.css';
 
+import React from 'react';
+
 import { useDrag } from 'react-dnd';
 
 import { socket } from '../socket/socket';
@@ -8,7 +10,7 @@ const ItemTypes = {
   TASK: "task"
 };
 
-export default function TaskCard({ task }) {
+export default function TaskCard({ task, onUpload }) {
   const [{ isDragging }, drag] = useDrag(() => ({
     type: ItemTypes.TASK,
     item: { id: task.id, status: task.status },
@@ -95,6 +97,15 @@ export default function TaskCard({ task }) {
             <option value="Enhancement">Enhancement</option>
           </select>
         </div>
+      </div>
+
+      <div className="task-footer">
+        <button
+          className="attach-btn"
+          onClick={() => onUpload(task.id)}
+        >
+          📎 Attach File
+        </button>
       </div>
 
       {task.attachments && task.attachments.length > 0 && (

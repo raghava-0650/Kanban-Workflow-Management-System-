@@ -1,6 +1,6 @@
 import './Navbar.css';
 
-import {
+import React, {
   useEffect,
   useRef,
   useState,
@@ -65,12 +65,12 @@ export default function Navbar({
     <nav className="navbar">
       <div className="navbar-left">
         <h1 className="navbar-title">
-          🚀 SyncBoard
+          KANBANBOARD
         </h1>
-        <div className={`connection-status ${isConnected ? 'connected' : 'disconnected'}`}>
+        {/* <div className={`connection-status ${isConnected ? 'connected' : 'disconnected'}`}>
           <span className="status-dot"></span>
           {isConnected ? 'Connected' : 'Disconnected'}
-        </div>
+        </div> */}
       </div>
 
       <div className="navbar-center">

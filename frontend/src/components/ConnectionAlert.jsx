@@ -1,6 +1,6 @@
 import './ConnectionAlert.css';
 
-import {
+import React, {
   useEffect,
   useState,
 } from 'react';

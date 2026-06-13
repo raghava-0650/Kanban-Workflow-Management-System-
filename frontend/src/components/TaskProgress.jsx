@@ -1,5 +1,7 @@
 import './TaskProgress.css';
 
+import React from 'react';
+
 import {
   Bar,
   BarChart,

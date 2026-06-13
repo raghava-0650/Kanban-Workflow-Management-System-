@@ -1,6 +1,6 @@
 import './AddTaskModel.css';
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 
 export default function AddTaskModal({ isOpen, onClose, onAddTask }) {
   const [title, setTitle] = useState("");

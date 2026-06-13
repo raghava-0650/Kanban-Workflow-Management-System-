@@ -10,8 +10,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-//configuration of multer for file uploads
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, "uploads/");
@@ -37,7 +37,6 @@ const upload = multer({
   }
 });
 
-// Create uploads directory if it doesn't exist
 const fs = require("fs");
 if (!fs.existsSync("uploads")) {
   fs.mkdirSync("uploads");
@@ -46,11 +45,9 @@ if (!fs.existsSync("uploads")) {
 const server = http.createServer(app);
 const io = new Server(server, { cors: { origin: "*" } });
 
-// Persistent task storage
 const TASKS_FILE = path.join(__dirname, "tasks.json");
 
 
-// Load tasks from file
 let tasks = [];
 function loadTasks() {
   try {
@@ -65,7 +62,6 @@ function loadTasks() {
   }
 }
 
-// Save tasks to file
 function saveTasks() {
   try {
     fs.writeFileSync(TASKS_FILE, JSON.stringify(tasks, null, 2), "utf8");
@@ -74,11 +70,9 @@ function saveTasks() {
   }
 }
 
-// Load tasks on server start
 loadTasks();
 
-
-// File upload endpoint
+const BASE_URL = "http://localhost:4000";
 app.post("/upload", upload.single("file"), (req, res) => {
   if (!req.file) {
     return res.status(400).json({ error: "No file uploaded" });
@@ -93,16 +87,13 @@ app.post("/upload", upload.single("file"), (req, res) => {
 io.on("connection", (socket) => {
   console.log(`⚡: ${socket.id} user just connected!`);
 
-  // Send all tasks to newly connected client
   socket.emit("sync:tasks", tasks);
 
-  // Handle explicit task request
   socket.on("request:tasks", () => {
     socket.emit("sync:tasks", tasks);
     console.log("Tasks requested by:", socket.id);
   });
 
-  // Create new task
   socket.on("task:create", (task) => {
     const newTask = {
       id: task.id || Date.now(),
@@ -120,7 +111,6 @@ io.on("connection", (socket) => {
     console.log("Task created:", newTask.id);
   });
 
-  // Update task
   socket.on("task:update", (updatedTask) => {
     tasks = tasks.map(t =>
       t.id === updatedTask.id ? { ...t, ...updatedTask } : t
@@ -130,7 +120,6 @@ io.on("connection", (socket) => {
     console.log("Task updated:", updatedTask.id);
   });
 
-  // Move task between columns
   socket.on("task:move", ({ taskId, newStatus }) => {
     tasks = tasks.map(t =>
       t.id === taskId ? { ...t, status: newStatus } : t
@@ -140,7 +129,6 @@ io.on("connection", (socket) => {
     console.log("Task moved:", taskId, "to", newStatus);
   });
 
-  // Delete task
   socket.on("task:delete", (id) => {
     tasks = tasks.filter(t => t.id !== id);
     saveTasks();
@@ -154,4 +142,32 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5000, () => console.log("Server running on port 5000"));
+function clearUploadsFolder() {
+  try {
+    if (fs.existsSync("uploads")) {
+      const files = fs.readdirSync("uploads");
+      for (const file of files) {
+        fs.unlinkSync(path.join("uploads", file));
+      }
+      console.log("Cleared uploads directory");
+    }
+  } catch (err) {
+    console.error("Error clearing uploads:", err.message);
+  }
+}
+
+app.post("/api/test/reset", (req, res) => {
+  console.log("🧹 Resetting test data store...");
+  
+  tasks = [];
+  
+  saveTasks();
+  
+  clearUploadsFolder();
+  
+  io.emit("sync:tasks", tasks);
+  
+  res.status(200).json({ message: "Test data storage successfully truncated." });
+});
+
+server.listen(4000, () => console.log("Server running on port 4000"));
