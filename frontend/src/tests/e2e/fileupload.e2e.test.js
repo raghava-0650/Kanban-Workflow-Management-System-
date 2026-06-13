@@ -5,7 +5,7 @@ import {
 
 test.describe('File Upload E2E Tests', () => {
   test.beforeEach(async ({ page, request }) => {
-    await request.post('http://localhost:4000/api/test/reset');
+    await request.post('https://kanban-workflow-management-system.onrender.com/api/test/reset');
     await page.goto('/');
     await expect(page.getByText(/KANBANBOARD/i)).toBeVisible();
     
@@ -44,7 +44,7 @@ test.describe('File Upload E2E Tests', () => {
 
 test.describe('File Upload Integration', () => {
   test.beforeEach(async ({ page, request }) => {
-    await request.post('http://localhost:4000/api/test/reset');
+    await request.post('https://kanban-workflow-management-system.onrender.com/api/test/reset');
     await page.goto('/');
     await expect(page.getByText(/KANBANBOARD/i)).toBeVisible();
     

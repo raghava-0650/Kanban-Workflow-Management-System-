@@ -73,7 +73,7 @@ export default function KanbanBoard() {
 
   const openAddModal = () => {
     if (!isConnected) {
-      alert("⚠️ Not connected to server. Please ensure the backend is running on http://localhost:4000");
+      alert("⚠️ Not connected to server. Please ensure the backend is running on https://kanban-workflow-management-system.onrender.com");
       return;
     }
     setShowAddModal(true);
@@ -131,7 +131,7 @@ export default function KanbanBoard() {
     formData.append("file", file);
 
     try {
-      const response = await fetch("http://localhost:4000/upload", {
+      const response = await fetch("https://kanban-workflow-management-system.onrender.com/upload", {
         method: "POST",
         body: formData
       });
