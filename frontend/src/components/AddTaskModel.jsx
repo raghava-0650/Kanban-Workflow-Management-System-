@@ -24,7 +24,6 @@ export default function AddTaskModal({ isOpen, onClose, onAddTask }) {
       attachments: []
     });
 
-    // Reset form
     setTitle("");
     setDescription("");
     setPriority("Medium");

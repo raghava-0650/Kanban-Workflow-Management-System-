@@ -30,19 +30,15 @@ export default function KanbanBoard() {
   const fileInputRef = useRef(null);
 
   useEffect(() => {
-    // Connection status handlers
     socket.on("connect", () => {
       setIsConnected(true);
-      // Request tasks when connected
       socket.emit("request:tasks");
     });
     socket.on("disconnect", () => setIsConnected(false));
     socket.on("sync:tasks", setTasks);
     
-    // Check initial connection status
     setIsConnected(socket.connected);
     
-    // If already connected, request tasks
     if (socket.connected) {
       socket.emit("request:tasks");
     }
@@ -54,11 +50,9 @@ export default function KanbanBoard() {
     };
   }, []);
 
-  // Apply filters whenever tasks, search, or filters change
   useEffect(() => {
     let filtered = [...tasks];
 
-    // Search filter
     if (searchTerm) {
       filtered = filtered.filter(task =>
         task.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -66,12 +60,10 @@ export default function KanbanBoard() {
       );
     }
 
-    // Priority filter
     if (filterPriority) {
       filtered = filtered.filter(task => task.priority === filterPriority);
     }
 
-    // Category filter
     if (filterCategory) {
       filtered = filtered.filter(task => task.category === filterCategory);
     }

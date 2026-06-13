@@ -20,7 +20,6 @@ export default function Navbar({
   const [activeCategory, setActiveCategory] = useState("");
   const filterRef = useRef(null);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (filterRef.current && !filterRef.current.contains(e.target)) {
@@ -67,10 +66,6 @@ export default function Navbar({
         <h1 className="navbar-title">
           KANBANBOARD
         </h1>
-        {/* <div className={`connection-status ${isConnected ? 'connected' : 'disconnected'}`}>
-          <span className="status-dot"></span>
-          {isConnected ? 'Connected' : 'Disconnected'}
-        </div> */}
       </div>
 
       <div className="navbar-center">
@@ -109,9 +104,9 @@ export default function Navbar({
                 <label>Priority:</label>
                 <select value={activePriority} onChange={(e) => handlePriorityChange(e.target.value)}>
                   <option value="">All</option>
-                  <option value="High">🔴 High</option>
-                  <option value="Medium">🟡 Medium</option>
-                  <option value="Low">🟢 Low</option>
+                  <option value="High">High</option>
+                  <option value="Medium">Medium</option>
+                  <option value="Low">Low</option>
                 </select>
               </div>
               <div className="filter-section">
